@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Video Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+
+
+<body class="letter-video">
+
+  <div class="back-button" onclick="history.back()">↩</div>
+
+  <div class="video-container">
+    <iframe id="youtubeVideo" src="" allowfullscreen></iframe>
+  </div>
+
+  <div class="nav-buttons">
+    <div class="tooltip">
+      <img src="image/menubttn.png" alt="Menu" onclick="goToMenu()" style="cursor: pointer;" />
+      <span class="tooltiptext">Menu</span>
+  </div>
+
+  <div class="tooltip">
+    <a href="letterpage.html">
+      <img src="image/lttrbttn.png" alt="Letter" />
+    </a>
+    <span class="tooltiptext">Replay</span>
+  </div>
+
+  <div class="tooltip">
+    <a href="vidpage.html">
+      <img src="image/replaybttn.png" alt="Home" />
+    </a>
+    <span class="tooltiptext">Letter</span>
+  </div>
+</div>
+
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const letter = urlParams.get("letter")?.toUpperCase() || "A";
+
+    const videoMap = {
+      A: "https://www.youtube.com/embed/K3GhsRH5Q5Y",
+      B: "https://www.youtube.com/embed/tP5XWlyTvk4",
+      C: "https://www.youtube.com/embed/TNz-jzbNV2M",
+      D: "https://www.youtube.com/embed/W0M4lInZv9Y",
+      E: "https://www.youtube.com/embed/pf5MTUyWYFU",
+      F: "https://www.youtube.com/embed/eUI4l7GM1lM",
+      G: "https://www.youtube.com/embed/MBMMXIhSS3c",
+      H: "https://www.youtube.com/embed/p1ASoANhBSc",
+      I: "https://www.youtube.com/embed/d5xnlvH_ICo",
+      J: "https://www.youtube.com/embed/hHbTRh1TULs",
+      K: "https://www.youtube.com/embed/K85TjizcuKE",
+      L: "https://www.youtube.com/embed/-dNQF8H3CcU",
+      M: "https://www.youtube.com/embed/wJIplZmqnkw",
+      N: "https://www.youtube.com/embed/qP7rd02SQ4o",
+      O: "https://www.youtube.com/embed/2WApyYMEeH8",
+      P: "https://www.youtube.com/embed/galVjBdSZEE",
+      Q: "https://www.youtube.com/embed/aurzlkmeuPc",
+      R: "https://www.youtube.com/embed/omn4RjCrVsA",
+      S: "https://www.youtube.com/embed/LXY01KIykkI",
+      T: "https://www.youtube.com/embed/yIsNtyqQiNw",
+      U: "https://www.youtube.com/embed/0ir7UICMfeA",
+      V: "https://www.youtube.com/embed/IpjfnlCrXyg",
+      W: "https://www.youtube.com/embed/CB2H8cPfU4w",
+      X: "https://www.youtube.com/embed/ESo7yjsi86c",
+      Y: "https://www.youtube.com/embed/ZOEkfCwjF_Y",
+      Z: "https://www.youtube.com/embed/QJNjqkVZBAI"
+    };
+    
+    const iframe = document.getElementById("youtubeVideo");
+    iframe.src = videoMap[letter] || "https://www.youtube.com/embed/dQw4w9WgXcQ";
+
+    function goToMenu() {
+    sessionStorage.setItem("showPopup", "yes");
+    window.location.href = "menupage.html";
+    }
+
+  </script>
+
+</body>
+</html>
+
+

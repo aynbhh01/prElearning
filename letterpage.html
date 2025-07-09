@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Letter Page</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet" />
+</head>
+
+<body class="letter-page">
+
+  <div class="back-button" onclick="goBackToMenu()">↩</div>
+
+  <h1 class="letter-display" id="letterDisplay">A a</h1>
+
+  <img id="letterImage" class="letter-image" src="" alt="Letter Image" />
+
+  <h2 id="typedWord" class="typed-word"></h2>
+
+  <div class="content-section" id="contentSection">
+    <h2 id="exampleTitle">Example Word</h2>
+    <img id="exampleImage" src="" alt="Example Image" />
+  </div>
+
+  <div class="next-button" onclick="goToLiving()">
+    <img src="image/next.png" alt="Next" />
+  </div>
+
+  <!-- AUDIO ELEMENT -->
+  <audio id="letterAudio">
+    <source id="audioSource" src="" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <div id="audioHint" class="audio-hint">Click anywhere to hear the letter sound</div>
+
+  <script>
+    const letter = new URLSearchParams(window.location.search).get("letter")?.toUpperCase() || "A";
+    document.getElementById("letterDisplay").textContent = `${letter} ${letter.toLowerCase()}`;
+
+    const examples = {
+      A: { word: "Apple", img: "apple.png" },
+      B: { word: "Ball", img: "ball.png" },
+      C: { word: "Cat", img: "cat.png" },
+      D: { word: "Donkey", img: "donkey.png" },
+      E: { word: "Elephant", img: "elephant.png" },
+      F: { word: "Fish", img: "fish.png" },
+      G: { word: "Giraffe", img: "giraffe.png" },
+      H: { word: "Hat", img: "hat.png" },
+      I: { word: "Ice", img: "ice.png" },
+      J: { word: "Jaguar", img: "jaguar.png" },
+      K: { word: "Kangaroo", img: "kangaroo.png" },
+      L: { word: "Lion", img: "lion.png" },
+      M: { word: "Mountain", img: "mountain.png" },
+      N: { word: "Notebook", img: "notebook.png" },
+      O: { word: "Onion", img: "onion.png" },
+      P: { word: "Panda", img: "panda.png" },
+      Q: { word: "Queen", img: "queen.png" },
+      R: { word: "Rabbit", img: "rabbit.png" },
+      S: { word: "Shark", img: "shark.png" },
+      T: { word: "Tiger", img: "tiger.png" },
+      U: { word: "Umbrella", img: "umbrella.png" },
+      V: { word: "Vest", img: "vest.png" },
+      W: { word: "Wolf", img: "wolf.png" },
+      X: { word: "X-Ray", img: "xray.png" },
+      Y: { word: "Yak", img: "yak.png" },
+      Z: { word: "Zebra", img: "zebra.png" }
+    };
+
+    const example = examples[letter];
+
+    if (example) {
+      const imgPath = `image/${letter}/${example.img}`;
+      document.getElementById("letterImage").src = imgPath;
+      document.getElementById("exampleImage").src = imgPath;
+      document.getElementById("exampleTitle").textContent = example.word;
+
+      const wordElement = document.getElementById("typedWord");
+      wordElement.textContent = "";
+      typeWriter(example.word, wordElement);
+    }
+
+    function goToLiving() {
+      window.location.href = `living.html?letter=${letter}`;
+    }
+
+    function goBackToMenu() {
+      sessionStorage.setItem("bgAudioStatus", "play");
+      window.location.href = "menupage.html";
+    }
+
+    function typeWriter(text, element, i = 0) {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        setTimeout(() => typeWriter(text, element, i + 1), 120);
+      }
+    }
+
+    const audioElement = document.getElementById("letterAudio");
+    const audioSource = document.getElementById("audioSource");
+    const audioHint = document.getElementById("audioHint");
+    audioSource.src = `audio/${letter}/${letter}.mp3`;
+    audioElement.load();
+
+    function handleAudioPlay() {
+      audioElement.play().catch(e => console.log("Audio play error:", e));
+      audioHint.style.display = "none";
+      document.body.removeEventListener("click", handleAudioPlay);
+    }
+
+    document.body.addEventListener("click", handleAudioPlay);
+  </script>
+
+</body>
+</html>
+
+
+

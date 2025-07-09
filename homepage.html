@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Preschool Learning</title>
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet">
+</head>
+
+<body class="welcome-body" id="bodyElement">
+
+  <div class="welcome-container" id="welcome-section">
+    <img src="image/logo.png" alt="Logo" class="logo" />
+    <a href="#" class="start-button" id="startBtn">Let's Start</a>
+  </div>
+
+  <div id="homepage-section" style="display: none;">
+    <div class="center-top">
+      <h1 id="changingText">Welcome Students!</h1>
+    </div>
+
+    <div class="center-bottom">
+      <div class="btn-row">
+        <button onclick="openPopup()" class="info-btn">About</button>
+        <a href="menupage.html" class="main-btn">Start Learn</a>
+      </div>
+    </div>
+
+    <div class="audio-controls">
+      <button onclick="toggleAudio()" id="sound-btn">🔇</button>
+    </div>
+  </div>
+
+  <audio id="bg-audio" src="audio/introsound.mp3" loop></audio>
+
+  <!-- Popup Box -->
+  <div class="popup" id="popup" style="display: none;">
+    <div class="popup-content">
+      <span class="close-btn" onclick="closePopup()">&times;</span>
+      <h2 style="text-align: center;">About Us</h2>
+      <p style="text-align: center; font-family: 'Poppins', sans-serif; font-size: 16px; line-height: 1.6; padding: 0 20px;">
+        The <strong>prElearning</strong> educational system project began on <strong>March 18, 2025</strong>, and was fully completed in <strong>June 2025</strong> as part of a special internship project by <strong>Ayu Nabihah Mohamad Yusni</strong>, a Bachelor of Science (Hons.) Information Systems Management student from <strong>Universiti Teknologi MARA (UiTM)</strong>, who started her internship at <strong>Vast Group Sdn. Bhd.</strong> on <strong>March 4, 2025</strong>.
+        <br><br>
+        This learning system was specially developed for <strong>4-year-old students</strong> at <strong>Aster International Preschool</strong>, aimed at supporting a more interactive, enjoyable, and age-appropriate teaching and learning process during the early years of education.
+        <br><br>
+        The system was successfully built with guidance and feedback from teachers, in alignment with the curriculum implemented at the preschool.
+      </p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>© 2025 prElearning | Developed during internship at Vast Group Sdn. Bhd. | Created by Ayu Nabihah Mohamad Yusni</p>
+  </footer>
+
+  <script>
+    const texts = ["Welcome Students!", "Let's Start Learning!"];
+    let idx = 0;
+    const textElement = document.getElementById("changingText");
+
+    setInterval(() => {
+      if (textElement) {
+        idx = (idx + 1) % texts.length;
+        textElement.innerHTML = texts[idx];
+      }
+    }, 4000);
+
+    const startBtn = document.getElementById("startBtn");
+    const welcomeSection = document.getElementById("welcome-section");
+    const homepageSection = document.getElementById("homepage-section");
+    const audio = document.getElementById("bg-audio");
+    const soundBtn = document.getElementById("sound-btn");
+
+    startBtn.addEventListener("click", () => {
+      welcomeSection.style.display = "none";
+      homepageSection.style.display = "block";
+
+      const body = document.getElementById("bodyElement");
+      body.classList.remove("welcome-body");
+      body.classList.add("homepage");
+
+      audio.play().then(() => {
+        soundBtn.textContent = '🔊';
+        sessionStorage.setItem("bgAudioStatus", "play");
+      }).catch(e => {
+        console.log("Autoplay blocked:", e);
+        soundBtn.textContent = '🔇';
+        sessionStorage.setItem("bgAudioStatus", "pause");
+      });
+    });
+
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.play();
+        soundBtn.textContent = '🔊';
+        sessionStorage.setItem("bgAudioStatus", "play");
+      } else {
+        audio.pause();
+        soundBtn.textContent = '🔇';
+        sessionStorage.setItem("bgAudioStatus", "pause");
+      }
+    }
+
+    function openPopup() {
+      document.getElementById("popup").style.display = "flex";
+    }
+
+    function closePopup() {
+      document.getElementById("popup").style.display = "none";
+    }
+  </script>
+</body>
+</html>
+
+

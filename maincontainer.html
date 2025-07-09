@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Main Container</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="main-container">
+
+  <div id="audio-controls">
+    <button onclick="toggleAudio()" id="sound-btn">🔇</button>
+  </div>
+
+  <audio id="bg-audio" src="audio/introsound.mp3" loop></audio>
+
+  <iframe id="contentFrame" src="homepage.html"></iframe>
+
+  <script>
+    const audio = document.getElementById("bg-audio");
+    const soundBtn = document.getElementById("sound-btn");
+    const iframe = document.getElementById("contentFrame");
+
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.play();
+        soundBtn.textContent = '🔊';
+        sessionStorage.setItem("bgAudioStatus", "play");
+      } else {
+        audio.pause();
+        soundBtn.textContent = '🔇';
+        sessionStorage.setItem("bgAudioStatus", "pause");
+      }
+    }
+
+    window.addEventListener("load", () => {
+      const status = sessionStorage.getItem("bgAudioStatus");
+      if (status === "play") {
+        audio.play().catch(() => {});
+        soundBtn.textContent = '🔊';
+      } else {
+        audio.pause();
+        soundBtn.textContent = '🔇';
+      }
+    });
+
+    window.addEventListener("message", function (e) {
+      if (e.data === "startLearning") {
+        iframe.src = "menupage.html";
+        audio.play().then(() => {
+          sessionStorage.setItem("bgAudioStatus", "play");
+          soundBtn.textContent = '🔊';
+        }).catch(() => {});
+      }
+    });
+  </script>
+</body>
+</html>

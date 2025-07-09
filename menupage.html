@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Alphabet Menu</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body class="menu-page">
+  <div class="back-button" onclick="window.location.href='homepage.html'">↩</div>
+
+  <div class="audio-controls">
+    <button onclick="toggleAudio()" id="sound-btn">🔇</button>
+  </div>
+
+  <div class="popup" id="popupBox" style="display: none;">
+  <div class="popup-content">
+    <h2 style="font-size: 2rem; text-align: center;">⭐⭐⭐</h2>
+    <p style="font-size: 1.6rem; text-align: center; margin-top: 10px;">You Doing Great! 😍</p>
+    <button id="continueBtn" style="margin-top: 20px; font-size: 1.3rem; padding: 10px 30px; border-radius: 20px; background: #e282a4; border: none; cursor: pointer;">
+      Continue
+    </button>
+  </div>
+  </div>
+
+
+  <h1 class="menu-title">Choose a Letter</h1><br><br>
+
+  <!-- Letter Rows -->
+  <div class="letter-row">
+    <div class="letter pink" onclick="goToLetterPage('A')">A&nbsp;&nbsp;a</div>
+    <div class="letter orange" onclick="goToLetterPage('B')">B&nbsp;&nbsp;b</div>
+    <div class="letter yellow" onclick="goToLetterPage('C')">C&nbsp;&nbsp;c</div>
+    <div class="letter green" onclick="goToLetterPage('D')">D&nbsp;&nbsp;d</div>
+    <div class="letter blue" onclick="goToLetterPage('E')">E&nbsp;&nbsp;e</div>
+    <div class="letter purple" onclick="goToLetterPage('F')">F&nbsp;&nbsp;f</div>
+    <div class="letter pink" onclick="goToLetterPage('G')">G&nbsp;&nbsp;g</div>
+  </div>
+
+  <div class="letter-row">
+    <div class="letter orange" onclick="goToLetterPage('H')">H&nbsp;&nbsp;h</div>
+    <div class="letter yellow" onclick="goToLetterPage('I')">I&nbsp;&nbsp;i</div>
+    <div class="letter green" onclick="goToLetterPage('J')">J&nbsp;&nbsp;j</div>
+    <div class="letter blue" onclick="goToLetterPage('K')">K&nbsp;&nbsp;k</div>
+    <div class="letter purple" onclick="goToLetterPage('L')">L&nbsp;&nbsp;l</div>
+    <div class="letter pink" onclick="goToLetterPage('M')">M&nbsp;&nbsp;m</div>
+  </div>
+
+  <div class="letter-row">
+    <div class="letter orange" onclick="goToLetterPage('N')">N&nbsp;&nbsp;n</div>
+    <div class="letter yellow" onclick="goToLetterPage('O')">O&nbsp;&nbsp;o</div>
+    <div class="letter green" onclick="goToLetterPage('P')">P&nbsp;&nbsp;p</div>
+    <div class="letter blue" onclick="goToLetterPage('Q')">Q&nbsp;&nbsp;q</div>
+    <div class="letter purple" onclick="goToLetterPage('R')">R&nbsp;&nbsp;r</div>
+  </div>
+
+  <div class="letter-row">
+    <div class="letter pink" onclick="goToLetterPage('S')">S&nbsp;&nbsp;s</div>
+    <div class="letter orange" onclick="goToLetterPage('T')">T&nbsp;&nbsp;t</div>
+    <div class="letter yellow" onclick="goToLetterPage('U')">U&nbsp;&nbsp;u</div>
+    <div class="letter green" onclick="goToLetterPage('V')">V&nbsp;&nbsp;v</div>
+  </div>
+
+  <div class="letter-row">
+    <div class="letter blue" onclick="goToLetterPage('W')">W&nbsp;&nbsp;w</div>
+    <div class="letter purple" onclick="goToLetterPage('X')">X&nbsp;&nbsp;x</div>
+    <div class="letter pink" onclick="goToLetterPage('Y')">Y&nbsp;&nbsp;y</div>
+  </div>
+  
+  <div class="letter-row">
+    <div class="letter orange" onclick="goToLetterPage('Z')">Z&nbsp;&nbsp;z</div>
+    <div class="letter turquoise" onclick="goToAlPage('♫')">♫</div>
+  </div>
+
+  <audio id="bg-audio" src="audio/introsound.mp3" loop></audio>
+
+  <script>
+    function goToLetterPage(letter) {
+      window.location.href = `letterpage.html?letter=${letter}`;
+    }
+
+    function goToAlPage(icon) {
+      window.location.href = `alpage.html`;
+    }
+
+    const audio = document.getElementById("bg-audio");
+    const soundBtn = document.getElementById("sound-btn");
+
+    function toggleAudio() {
+      if (audio.paused) {
+        audio.play();
+        soundBtn.textContent = '🔊';
+        sessionStorage.setItem("bgAudioStatus", "play");
+      } else {
+        audio.pause();
+        soundBtn.textContent = '🔇';
+        sessionStorage.setItem("bgAudioStatus", "pause");
+      }
+    }
+
+    // Main autoplay logic
+    window.addEventListener("load", () => {
+      const status = sessionStorage.getItem("bgAudioStatus");
+
+      if (status === "play") {
+        audio.play().then(() => {
+          soundBtn.textContent = '🔊';
+        }).catch(() => {
+          soundBtn.textContent = '🔇';
+        });
+      } else {
+        soundBtn.textContent = '🔇';
+      }
+    });
+
+    // Interaction fallback if autoplay blocked
+    function handleFirstInteraction() {
+      audio.play().then(() => {
+        soundBtn.textContent = '🔊';
+        sessionStorage.setItem("bgAudioStatus", "play");
+      }).catch(() => {
+        soundBtn.textContent = '🔇';
+      });
+    }
+
+    // Trigger on first mousemove or hover
+    document.body.addEventListener("mousemove", handleFirstInteraction, { once: true });
+
+    document.querySelectorAll('.letter').forEach(letter => {
+      letter.addEventListener("mouseenter", handleFirstInteraction, { once: true });
+    });
+
+    // Check if popup should be shown
+    if (sessionStorage.getItem("showPopup") === "yes") {
+    document.getElementById("popupBox").style.display = "flex";
+    sessionStorage.setItem("showPopup", "no");
+
+    // Prevent menu interaction before closing popup
+    document.querySelectorAll('.letter').forEach(el => el.style.pointerEvents = "none");
+
+    document.getElementById("continueBtn").addEventListener("click", () => {
+    document.getElementById("popupBox").style.display = "none";
+
+    // Enable menu again
+    document.querySelectorAll('.letter').forEach(el => el.style.pointerEvents = "auto");
+
+    // Simulate user interaction so audio plays
+    audio.play().then(() => {
+      soundBtn.textContent = '🔊';
+      sessionStorage.setItem("bgAudioStatus", "play");
+    }).catch(() => {
+      soundBtn.textContent = '🔇';
+      });
+    });
+   }
+
+  </script>
+</body>
+</html>

@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Non-Living Things</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body class="non-living">
+  <div class="back-button" onclick="window.location.href='letterpage.html?letter=' + window.letter">↩</div>
+
+  <h1 id="pageTitle">Non-Living things that start with A</h1>
+
+  <div class="clickme-wrapper" id="clickMeSection">
+    <div class="clickme-hitbox" id="clickMeIcon"></div>
+    <div class="speech-bubble" id="clickMeBubble">Click on me</div>
+  </div>
+
+  <div id="livingList" class="grid-view"></div>
+
+  <div id="focusView" class="focus-view">
+    <img id="bigImage" class="big-img" />
+    <h2 id="wordLabel"></h2>
+  </div>
+
+  <div id="nextButton" class="next-button">
+    <img src="image/next.png" alt="Next" />
+  </div>
+
+  <div id="backNote" class="audio-hint">Click anywhere<br>to go back</div>
+
+  <audio id="wordAudio"></audio>
+
+  <audio id="introLivingAudio">
+    <source id="livingSource" src="" type="audio/mpeg">
+    Your browser does not support the audio element.
+  </audio>
+
+  <script>
+    const urlParams = new URLSearchParams(window.location.search);
+    window.letter = urlParams.get("letter")?.toUpperCase() || "A";
+    const letter = window.letter;
+
+    const introAudio = document.getElementById("introLivingAudio");
+    const source = document.getElementById("livingSource");
+    source.src = `audio/${letter}/audnonliving/${letter}Non.mp3`;
+    introAudio.load();
+
+    const clickMeBubble = document.getElementById("clickMeBubble");
+    const clickMeIcon = document.getElementById("clickMeIcon");
+
+    clickMeIcon.addEventListener("click", () => {
+      introAudio.play().catch(e => console.log("Intro audio play error:", e));
+      clickMeBubble.style.display = "none";
+    });
+
+    const pageTitle = document.getElementById("pageTitle");
+    pageTitle.textContent = `Non-Living things that start with ${letter}`;
+
+    const listContainer = document.getElementById("livingList");
+    const focusView = document.getElementById("focusView");
+    const bigImage = document.getElementById("bigImage");
+    const wordLabel = document.getElementById("wordLabel");
+    const wordAudio = document.getElementById("wordAudio");
+    const nextButton = document.getElementById("nextButton");
+    const backNote = document.getElementById("backNote");
+
+    const data = {
+      A: [
+        { img: "aeroplane.png", word: "Aeroplane", audio: "aeroplane.mp3" },
+        { img: "axe.png", word: "Axe", audio: "axe.mp3" },
+        { img: "apron.png", word: "Apron", audio: "apron.mp3" },
+        { img: "anchor.png", word: "Anchor", audio: "anchor.mp3" },
+        { img: "alarmclock.png", word: "Alarm Clock", audio: "alarmclock.mp3" },
+      ],
+      B: [
+        { img: "ballnonliv.png", word: "Ball", audio: "ball.mp3" },
+        { img: "bathtub.png", word: "Bathtub", audio: "bathtub.mp3" },
+        { img: "box.png", word: "Box", audio: "box.mp3" },
+        { img: "bell.png", word: "Bell", audio: "bell.mp3" },
+        { img: "backpack.png", word: "Backpack", audio: "backpack.mp3" },
+      ], 
+      C: [
+        { img: "cup.png", word: "Cup", audio: "cup.mp3" },
+        { img: "car.png", word: "Car", audio: "car.mp3" },
+        { img: "chair.png", word: "Chair", audio: "chair.mp3" },
+        { img: "clock.png", word: "Clock", audio: "clock.mp3" },
+        { img: "crayon.png", word: "Crayon", audio: "crayon.mp3" },
+      ],
+      D: [
+        { img: "drum.png", word: "Drum", audio: "drum.mp3" },
+        { img: "door.png", word: "Door", audio: "door.mp3" },
+        { img: "desk.png", word: "Desk", audio: "desk.mp3" },
+        { img: "dice.png", word: "Dice", audio: "dice.mp3" },
+        { img: "doll.png", word: "Doll", audio: "doll.mp3" },
+      ],
+       E: [
+         { img: "eraser.png", word: "Eraser", audio: "eraser.mp3" },
+         { img: "envelope.png", word: "Envelope", audio: "envelope.mp3" },
+         { img: "engine.png", word: "Engine", audio: "easel.mp3" },
+         { img: "egg.png", word: "Egg", audio: "electricfan.mp3" },
+         { img: "earring.png", word: "Earring", audio: "eggbeater.mp3" },
+      ],
+      F: [
+        { img: "fan.png", word: "Fan", audio: "fan.mp3" },
+        { img: "flag.png", word: "Flag", audio: "flag.mp3" },
+        { img: "fire.png", word: "Fire", audio: "fridge.mp3" },
+        { img: "fork.png", word: "Fork", audio: "fork.mp3" },
+        { img: "feather.png", word: "Feather", audio: "feather.mp3" },
+      ],
+      G: [
+        { img: "glove.png", word: "Glove", audio: "glove.mp3" },
+        { img: "guitar.png", word: "Guitar", audio: "guitar.mp3" },
+        { img: "glass.png", word: "Glass", audio: "glass.mp3" },
+        { img: "gift.png", word: "Gift Box", audio: "giftbox.mp3" },
+        { img: "goggles.png", word: "Goggles", audio: "goggles.mp3" },
+      ],
+      H: [
+        { img: "hammer.png", word: "Hammer", audio: "hammer.mp3" },
+        { img: "hatnonliv.png", word: "Hat", audio: "hat.mp3" },
+        { img: "house.png", word: "House", audio: "house.mp3" },
+        { img: "helicopter.png", word: "Helicopter", audio: "helicopter.mp3" },
+        { img: "hock.png", word: "Hock", audio: "hock.mp3" },
+      ],
+      I: [
+        { img: "iron.png", word: "Iron", audio: "iron.mp3" },
+        { img: "igloo.png", word: "Igloo", audio: "igloo.mp3" },
+        { img: "instrument.png", word: "Instruments", audio: "instruments.mp3" },
+        { img: "icecream.png", word: "Ice Cream", audio: "icecream.mp3" },
+        { img: "ink.png", word: "Ink", audio: "ink.mp3" },
+      ],
+      J: [
+        { img: "jar.png", word: "Jar", audio: "jar.mp3" },
+        { img: "jacket.png", word: "Jacket", audio: "jacket.mp3" },
+        { img: "jet.png", word: "Jet", audio: "jet.mp3" },
+        { img: "jewel.png", word: "Jewelry", audio: "jewelry.mp3" },
+        { img: "jelly.png", word: "Jelly", audio: "jelly.mp3" },
+      ],
+      K: [
+        { img: "kettle.png", word: "Kettle", audio: "kettle.mp3" },
+        { img: "key.png", word: "Key", audio: "key.mp3" },
+        { img: "kite.png", word: "Kite", audio: "kite.mp3" },
+        { img: "keyboard.png", word: "Keyboard", audio: "keyboard.mp3" },
+        { img: "knife.png", word: "Knife", audio: "knife.mp3" },
+      ],
+      L: [
+        { img: "lamp.png", word: "Lamp", audio: "lamp.mp3" },
+        { img: "lunchbox.png", word: "Lunch Box", audio: "lunchbox.mp3" },
+        { img: "lock.png", word: "Lock", audio: "lock.mp3" },
+        { img: "lantern.png", word: "Lantern", audio: "lantern.mp3" },
+        { img: "laptop.png", word: "Laptop", audio: "laptop.mp3" },
+      ],
+      M: [
+        { img: "mountainnonliv.png", word: "Mountain", audio: "mountain.mp3" },
+        { img: "mug.png", word: "Mug", audio: "mug.mp3" },
+        { img: "mirror.png", word: "Mirror", audio: "mirror.mp3" },
+        { img: "map.png", word: "Map", audio: "map.mp3" },
+        { img: "microphone.png", word: "Microphone", audio: "microphone.mp3" },
+      ],
+      N: [
+        { img: "notebooknonliv.png", word: "Notebook", audio: "notebook.mp3" },
+        { img: "napkin.png", word: "Napkin", audio: "napkin.mp3" },
+        { img: "nail.png", word: "Nail", audio: "nail.mp3" },
+        { img: "net.png", word: "Net", audio: "net.mp3" },
+        { img: "necklace.png", word: "Necklace", audio: "necklace.mp3" },
+      ],
+      O: [
+        { img: "oven.png", word: "Oven", audio: "oven.mp3" },
+        { img: "oilcan.png", word: "Oil Can", audio: "oilcan.mp3" },
+        { img: "oar.png", word: "Oar", audio: "oar.mp3" },
+        { img: "opener.png", word: "Opener", audio: "opener.mp3" },
+        { img: "oil.png", word: "Oil", audio: "oil.mp3" },
+      ],
+      P: [
+        { img: "pan.png", word: "Pan", audio: "pan.mp3" },
+        { img: "paper.png", word: "Pen", audio: "pen.mp3" },
+        { img: "pencil.png", word: "Pencil", audio: "pencil.mp3" },
+        { img: "pillow.png", word: "Pillow", audio: "pillow.mp3" },
+        { img: "plate.png", word: "Plate", audio: "plate.mp3" },
+      ],
+      Q: [
+        { img: "quilt.png", word: "Quilt", audio: "quilt.mp3" },
+        { img: "quill.png", word: "Quill", audio: "quill.mp3" },
+        { img: "quiver.png", word: "Quiver", audio: "Quiver.mp3" },
+      ],
+      R: [
+        { img: "ring.png", word: "Radio", audio: "radio.mp3" },
+        { img: "ruler.png", word: "Ruler", audio: "ruler.mp3" },
+        { img: "robot.png", word: "Robot", audio: "robot.mp3" },
+        { img: "rainbow.png", word: "Rope", audio: "rope.mp3" },
+        { img: "rock.png", word: "Rock", audio: "rock.mp3" },
+      ],
+      S: [
+        { img: "spoon.png", word: "Spoon", audio: "spoon.mp3" },
+        { img: "scissors.png", word: "Scissors", audio: "scissors.mp3" },
+        { img: "sock.png", word: "Sock", audio: "sock.mp3" },
+        { img: "stapler.png", word: "Stapler", audio: "stapler.mp3" },
+        { img: "star.png", word: "Screwdriver", audio: "screwdriver.mp3" },
+      ],
+      T: [
+        { img: "table.png", word: "Table", audio: "table.mp3" },
+        { img: "television.png", word: "Television", audio: "television.mp3" },
+        { img: "towel.png", word: "Towel", audio: "towel.mp3" },
+        { img: "truck.png", word: "Toothbrush", audio: "toothbrush.mp3" },
+        { img: "tape.png", word: "Tape", audio: "tape.mp3" },
+      ],
+      U: [
+        { img: "ukulele.png", word: "Ukulele", audio: "ukulele.mp3" },
+        { img: "utensil.png", word: "Utensil", audio: "utensil.mp3" },
+        { img: "ufo.png", word: "Ufo", audio: "ufo.mp3" },
+        { img: "uniform.png", word: "Uniform", audio: "uniform.mp3" },
+        { img: "unicycle.png", word: "Unicycle", audio: "unicycle.mp3" },
+      ],
+      V: [
+        { img: "vase.png", word: "Vase", audio: "vase.mp3" },
+        { img: "vacuum.png", word: "Vacuum", audio: "vacuum.mp3" },
+        { img: "violin.png", word: "Violin", audio: "violin.mp3" },
+        { img: "vehicle.png", word: "Vehicle", audio: "vehicle.mp3" },
+        { img: "voucher.png", word: "Voucher", audio: "voucher.mp3" },
+      ],
+      W: [
+        { img: "whistle.png", word: "Whistle", audio: "whistle.mp3" },
+        { img: "water.png", word: "Water", audio: "water.mp3" },
+        { img: "window.png", word: "Window", audio: "window.mp3" },
+        { img: "watch.png", word: "Watch", audio: "watch.mp3" },
+        { img: "wardrobe.png", word: "Wardrobe", audio: "wardrobe.mp3" },
+      ],
+      X: [
+        { img: "xylophone.png", word: "Xylophone", audio: "xylophone.mp3" },
+      ],
+      Y: [
+        { img: "yoyo.png", word: "Yoyo", audio: "yoyo.mp3" },
+        { img: "yarn.png", word: "Yarn", audio: "yarn.mp3" },
+        { img: "yogurt.png", word: "Yogurt", audio: "yogurt.mp3" },
+        { img: "yolk.png", word: "Yolk", audio: "yolk.mp3" },
+        { img: "yurt.png", word: "Yurt", audio: "yurt.mp3" },
+      ],
+      Z: [
+        { img: "zip.png", word: "Zip", audio: "zip.mp3" },
+        { img: "zigzag.png", word: "Zigzag Box", audio: "zigzag.mp3" },
+        { img: "zero.png", word: "Zero", audio: "zero.mp3" },
+        { img: "zither.png", word: "Zither", audio: "zither.mp3" },
+        { img: "zoo.png", word: "Zoo", audio: "zoo.mp3" },
+      ]
+    };
+
+    const items = data[letter] || [];
+
+    const row1 = document.createElement("div");
+    row1.className = "custom-row";
+    const row2 = document.createElement("div");
+    row2.className = "custom-row";
+
+    items.forEach((item, index) => {
+      const img = document.createElement("img");
+      img.src = `image/${letter}/non-living/${item.img}`;
+      img.alt = item.word;
+      img.classList.add("thumbnail");
+
+      img.onclick = () => showFocus(item, img);
+
+      if (index < 3) {
+        row1.appendChild(img);
+      } else {
+        row2.appendChild(img);
+      }
+    });
+
+    listContainer.appendChild(row1);
+    listContainer.appendChild(row2);
+
+    function showFocus(item, imgElement) {
+      document.querySelectorAll(".thumbnail").forEach(el => el.classList.remove("active"));
+      imgElement.classList.add("active");
+
+      bigImage.src = `image/${letter}/non-living/${item.img}`;
+      wordLabel.textContent = "";
+      wordAudio.src = `audio/${letter}/audnonliving/${item.audio}`;
+      wordAudio.volume = 1;
+
+      backNote.style.display = "none";
+
+      wordAudio.play().catch(err => console.log("Audio play error:", err));
+      wordAudio.onended = () => {
+        backNote.style.display = "block";
+      };
+
+      typeWriter(item.word, wordLabel);
+
+      focusView.style.display = "flex";
+      listContainer.style.display = "none";
+      nextButton.style.display = "none";
+
+      clickMeBubble.innerHTML = "Click anywhere<br>to go back";
+      clickMeBubble.style.display = "block";
+    }
+
+    function typeWriter(text, element, i = 0) {
+      if (i < text.length) {
+        element.textContent += text.charAt(i);
+        setTimeout(() => typeWriter(text, element, i + 1), 100);
+      }
+    }
+
+    document.body.onclick = function (e) {
+      if (!e.target.classList.contains("thumbnail")) {
+        focusView.style.display = "none";
+        listContainer.style.display = "flex";
+        nextButton.style.display = "block";
+        backNote.style.display = "none";
+        clickMeBubble.style.display = "none";
+      }
+    };
+
+    nextButton.onclick = () => {
+      window.location.href = `vidpage.html?letter=${letter}`;
+    };
+  </script>
+</body>
+</html>
