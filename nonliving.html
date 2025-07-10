@@ -51,9 +51,11 @@
     const clickMeIcon = document.getElementById("clickMeIcon");
 
     clickMeIcon.addEventListener("click", () => {
+      introAudio.currentTime = 0;
       introAudio.play().catch(e => console.log("Intro audio play error:", e));
       clickMeBubble.style.display = "none";
     });
+
 
     const pageTitle = document.getElementById("pageTitle");
     pageTitle.textContent = `Non-Living things that start with ${letter}`;
@@ -310,8 +312,14 @@
         nextButton.style.display = "block";
         backNote.style.display = "none";
         clickMeBubble.style.display = "none";
+
+        wordAudio.pause();
+        wordAudio.currentTime = 0;
+        introAudio.pause();
+        introAudio.currentTime = 0;
       }
     };
+
 
     nextButton.onclick = () => {
       window.location.href = `vidpage.html?letter=${letter}`;
