@@ -50,12 +50,19 @@
     const clickMeBubble = document.getElementById("clickMeBubble");
     const clickMeIcon = document.getElementById("clickMeIcon");
 
-    clickMeIcon.addEventListener("click", () => {
+    function playIntroAudio() {
       introAudio.currentTime = 0;
       introAudio.play().catch(e => console.log("Audio play error:", e));
       clickMeBubble.style.display = "none";
+    }
+
+    clickMeIcon.addEventListener("mouseenter", () => {
+      playIntroAudio();
     });
 
+    clickMeIcon.addEventListener("click", () => {
+     playIntroAudio();
+    });
 
     const pageTitle = document.getElementById("pageTitle");
     pageTitle.textContent = `Living things that start with ${letter}`;

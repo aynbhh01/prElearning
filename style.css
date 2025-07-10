@@ -769,6 +769,12 @@ body.living-page {
   background-position: center;
   pointer-events: none;
   z-index: -1;
+  transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.clickme-hitbox:hover::before {
+  transform: scale(1.05);
+  filter: brightness(1.3);
 }
 
 .speech-bubble {
