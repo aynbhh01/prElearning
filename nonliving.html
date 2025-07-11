@@ -32,8 +32,9 @@
 
   <audio id="wordAudio"></audio>
 
-  <audio id="introLivingAudio">
-    <source id="livingSource" src="" type="audio/mpeg">
+  <!-- ✅ UBAHAN BARU: Tambah audio untuk {letter}Non.mp3 -->
+  <audio id="introAudio">
+    <source id="audioSource" src="" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
@@ -42,20 +43,20 @@
     window.letter = urlParams.get("letter")?.toUpperCase() || "A";
     const letter = window.letter;
 
-    const introAudio = document.getElementById("introLivingAudio");
-    const source = document.getElementById("livingSource");
-    source.src = `audio/${letter}/audnonliving/${letter}Non.mp3`;
+    const introAudio = document.getElementById("introAudio"); // ✅ UBAHAN BARU
+    const audioSource = document.getElementById("audioSource");
+    audioSource.src = `audio/${letter}/audnonliving/${letter}Non.mp3`; // ✅ UBAHAN BARU
     introAudio.load();
 
     const clickMeBubble = document.getElementById("clickMeBubble");
     const clickMeIcon = document.getElementById("clickMeIcon");
 
+    // ✅ UBAHAN BARU: Main audio bila klik gambar
     clickMeIcon.addEventListener("click", () => {
       introAudio.currentTime = 0;
       introAudio.play().catch(e => console.log("Intro audio play error:", e));
       clickMeBubble.style.display = "none";
     });
-
 
     const pageTitle = document.getElementById("pageTitle");
     pageTitle.textContent = `Non-Living things that start with ${letter}`;
@@ -319,7 +320,6 @@
         introAudio.currentTime = 0;
       }
     };
-
 
     nextButton.onclick = () => {
       window.location.href = `vidpage.html?letter=${letter}`;

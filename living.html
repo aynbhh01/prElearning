@@ -32,9 +32,13 @@
 
   <audio id="wordAudio"></audio>
 
+  <!-- ✅ UBAHAN BARU: Tambah dua audio untuk living dan non-living -->
   <audio id="introLivingAudio">
     <source id="livingSource" src="" type="audio/mpeg">
-    Your browser does not support the audio element.
+  </audio>
+
+  <audio id="introNonAudio">
+    <source id="nonSource" src="" type="audio/mpeg">
   </audio>
 
   <script>
@@ -42,26 +46,30 @@
     window.letter = urlParams.get("letter")?.toUpperCase() || "A";
     const letter = window.letter;
 
-    const introAudio = document.getElementById("introLivingAudio");
-    const source = document.getElementById("livingSource");
-    source.src = `audio/${letter}/audliving/${letter}Liv.mp3`;
-    introAudio.load();
+    // ✅ UBAHAN BARU: Ambil elemen audio living & non-living
+    const introLivingAudio = document.getElementById("introLivingAudio");
+    const introNonAudio = document.getElementById("introNonAudio");
+    const livingSource = document.getElementById("livingSource");
+    const nonSource = document.getElementById("nonSource");
+
+    // ✅ UBAHAN BARU: Tetapkan sumber audio
+    livingSource.src = `audio/${letter}/audliving/${letter}Liv.mp3`;
+    nonSource.src = `audio/${letter}/audnonliving/${letter}Non.mp3`;
+    introLivingAudio.load();
+    introNonAudio.load();
 
     const clickMeBubble = document.getElementById("clickMeBubble");
     const clickMeIcon = document.getElementById("clickMeIcon");
 
-    function playIntroAudio() {
-      introAudio.currentTime = 0;
-      introAudio.play().catch(e => console.log("Audio play error:", e));
-      clickMeBubble.style.display = "none";
-    }
-
-    clickMeIcon.addEventListener("mouseenter", () => {
-      playIntroAudio();
-    });
-
+    // ✅ UBAHAN BARU: Main kedua-dua audio bila klik image
     clickMeIcon.addEventListener("click", () => {
-     playIntroAudio();
+      introLivingAudio.currentTime = 0;
+      introLivingAudio.play().catch(e => console.log("Living audio play error:", e));
+
+      introNonAudio.currentTime = 0;
+      introNonAudio.play().catch(e => console.log("Non-living audio play error:", e));
+
+      clickMeBubble.style.display = "none";
     });
 
     const pageTitle = document.getElementById("pageTitle");
@@ -310,11 +318,12 @@
 
         wordAudio.pause();
         wordAudio.currentTime = 0;
-        introAudio.pause();
-        introAudio.currentTime = 0;
+        introLivingAudio.pause();
+        introLivingAudio.currentTime = 0;
+        introNonAudio.pause();
+        introNonAudio.currentTime = 0;
       }
     };
-
 
     nextButton.onclick = () => {
       window.location.href = `nonliving.html?letter=${letter}`;
