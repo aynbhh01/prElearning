@@ -52,11 +52,11 @@
     const livingSource = document.getElementById("livingSource");
     const nonSource = document.getElementById("nonSource");
 
-    // ✅ UBAHAN BARU: Tetapkan sumber audio
     livingSource.src = `audio/${letter}/audliving/${letter}Liv.mp3`;
-    nonSource.src = `audio/${letter}/audnonliving/${letter}Non.mp3`;
+    nonSource.src = `audio/${letter}/audnonliving/${letter}nonLiv.mp3`; // ✅ BETUL
     introLivingAudio.load();
     introNonAudio.load();
+
 
     const clickMeBubble = document.getElementById("clickMeBubble");
     const clickMeIcon = document.getElementById("clickMeIcon");
