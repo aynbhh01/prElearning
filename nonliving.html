@@ -31,45 +31,56 @@
   <div id="backNote" class="audio-hint">Click anywhere<br>to go back</div>
 
   <audio id="wordAudio"></audio>
-
-  <!-- ✅ UBAHAN BARU: Tambah audio untuk {letter}Non.mp3 -->
   <audio id="introAudio">
     <source id="audioSource" src="" type="audio/mpeg">
     Your browser does not support the audio element.
   </audio>
 
   <script>
-    const urlParams = new URLSearchParams(window.location.search);
-    window.letter = urlParams.get("letter")?.toUpperCase() || "A";
-    const letter = window.letter;
+    window.onload = function () {
+      const urlParams = new URLSearchParams(window.location.search);
+      window.letter = urlParams.get("letter")?.toUpperCase() || "A";
+      const letter = window.letter;
 
-    const introAudio = document.getElementById("introAudio"); // ✅ UBAHAN BARU
-    const audioSource = document.getElementById("audioSource");
-    audioSource.src = `audio/${letter}/audnonliving/${letter}nonLiv.mp3`;
-    introAudio.load();
+      const introAudio = document.getElementById("introAudio");
+      const audioSource = document.getElementById("audioSource");
+      audioSource.src = `audio/${letter}/audnonliving/${letter}nonLiv.mp3`;
+      introAudio.load();
 
-    const clickMeBubble = document.getElementById("clickMeBubble");
-    const clickMeIcon = document.getElementById("clickMeIcon");
+      const clickMeBubble = document.getElementById("clickMeBubble");
+      const clickMeIcon = document.getElementById("clickMeIcon");
 
-    // ✅ UBAHAN BARU: Main audio bila klik gambar
-    clickMeIcon.addEventListener("click", () => {
-      introAudio.currentTime = 0;
-      introAudio.play().catch(e => console.log("Intro audio play error:", e));
-      clickMeBubble.style.display = "none";
-    });
+      console.log("🎯 clickMeIcon element:", clickMeIcon);
 
-    const pageTitle = document.getElementById("pageTitle");
-    pageTitle.textContent = `Non-Living things that start with ${letter}`;
+      clickMeIcon.addEventListener("click", () => {
+        console.log("🟡 Click detected on icon!");
+        console.log("🎵 Audio source path:", audioSource.src);
 
-    const listContainer = document.getElementById("livingList");
-    const focusView = document.getElementById("focusView");
-    const bigImage = document.getElementById("bigImage");
-    const wordLabel = document.getElementById("wordLabel");
-    const wordAudio = document.getElementById("wordAudio");
-    const nextButton = document.getElementById("nextButton");
-    const backNote = document.getElementById("backNote");
+        introAudio.currentTime = 0;
+        introAudio.play()
+          .then(() => {
+            console.log("✅ Audio played successfully!");
+          })
+          .catch(e => {
+            console.error("❌ Failed to play audio:", e);
+            alert("Audio play error: " + e.message);
+          });
 
-    const data = {
+        clickMeBubble.style.display = "none";
+      });
+
+      const pageTitle = document.getElementById("pageTitle");
+      pageTitle.textContent = `Non-Living things that start with ${letter}`;
+
+      const listContainer = document.getElementById("livingList");
+      const focusView = document.getElementById("focusView");
+      const bigImage = document.getElementById("bigImage");
+      const wordLabel = document.getElementById("wordLabel");
+      const wordAudio = document.getElementById("wordAudio");
+      const nextButton = document.getElementById("nextButton");
+      const backNote = document.getElementById("backNote");
+
+      const data = {
       A: [
         { img: "aeroplane.png", word: "Aeroplane", audio: "aeroplane.mp3" },
         { img: "axe.png", word: "Axe", audio: "axe.mp3" },
@@ -248,81 +259,82 @@
       ]
     };
 
-    const items = data[letter] || [];
+      const items = data[letter] || [];
 
-    const row1 = document.createElement("div");
-    row1.className = "custom-row";
-    const row2 = document.createElement("div");
-    row2.className = "custom-row";
+      const row1 = document.createElement("div");
+      row1.className = "custom-row";
+      const row2 = document.createElement("div");
+      row2.className = "custom-row";
 
-    items.forEach((item, index) => {
-      const img = document.createElement("img");
-      img.src = `image/${letter}/non-living/${item.img}`;
-      img.alt = item.word;
-      img.classList.add("thumbnail");
+      items.forEach((item, index) => {
+        const img = document.createElement("img");
+        img.src = `image/${letter}/non-living/${item.img}`;
+        img.alt = item.word;
+        img.classList.add("thumbnail");
 
-      img.onclick = () => showFocus(item, img);
+        img.onclick = () => showFocus(item, img);
 
-      if (index < 3) {
-        row1.appendChild(img);
-      } else {
-        row2.appendChild(img);
+        if (index < 3) {
+          row1.appendChild(img);
+        } else {
+          row2.appendChild(img);
+        }
+      });
+
+      listContainer.appendChild(row1);
+      listContainer.appendChild(row2);
+
+      function showFocus(item, imgElement) {
+        document.querySelectorAll(".thumbnail").forEach(el => el.classList.remove("active"));
+        imgElement.classList.add("active");
+
+        bigImage.src = `image/${letter}/non-living/${item.img}`;
+        wordLabel.textContent = "";
+        wordAudio.src = `audio/${letter}/audnonliving/${item.audio}`;
+        wordAudio.volume = 1;
+
+        backNote.style.display = "none";
+
+        wordAudio.play().catch(err => console.log("Audio play error:", err));
+        wordAudio.onended = () => {
+          backNote.style.display = "block";
+        };
+
+        typeWriter(item.word, wordLabel);
+
+        focusView.style.display = "flex";
+        listContainer.style.display = "none";
+        nextButton.style.display = "none";
+
+        clickMeBubble.innerHTML = "Click anywhere<br>to go back";
+        clickMeBubble.style.display = "block";
       }
-    });
 
-    listContainer.appendChild(row1);
-    listContainer.appendChild(row2);
+      function typeWriter(text, element, i = 0) {
+        if (i < text.length) {
+          element.textContent += text.charAt(i);
+          setTimeout(() => typeWriter(text, element, i + 1), 100);
+        }
+      }
 
-    function showFocus(item, imgElement) {
-      document.querySelectorAll(".thumbnail").forEach(el => el.classList.remove("active"));
-      imgElement.classList.add("active");
+      document.body.onclick = function (e) {
+        if (!e.target.classList.contains("thumbnail")) {
+          focusView.style.display = "none";
+          listContainer.style.display = "flex";
+          nextButton.style.display = "block";
+          backNote.style.display = "none";
+          clickMeBubble.style.display = "none";
 
-      bigImage.src = `image/${letter}/non-living/${item.img}`;
-      wordLabel.textContent = "";
-      wordAudio.src = `audio/${letter}/audnonliving/${item.audio}`;
-      wordAudio.volume = 1;
-
-      backNote.style.display = "none";
-
-      wordAudio.play().catch(err => console.log("Audio play error:", err));
-      wordAudio.onended = () => {
-        backNote.style.display = "block";
+          wordAudio.pause();
+          wordAudio.currentTime = 0;
+          introAudio.pause();
+          introAudio.currentTime = 0;
+        }
       };
 
-      typeWriter(item.word, wordLabel);
-
-      focusView.style.display = "flex";
-      listContainer.style.display = "none";
-      nextButton.style.display = "none";
-
-      clickMeBubble.innerHTML = "Click anywhere<br>to go back";
-      clickMeBubble.style.display = "block";
-    }
-
-    function typeWriter(text, element, i = 0) {
-      if (i < text.length) {
-        element.textContent += text.charAt(i);
-        setTimeout(() => typeWriter(text, element, i + 1), 100);
-      }
-    }
-
-    document.body.onclick = function (e) {
-      if (!e.target.classList.contains("thumbnail")) {
-        focusView.style.display = "none";
-        listContainer.style.display = "flex";
-        nextButton.style.display = "block";
-        backNote.style.display = "none";
-        clickMeBubble.style.display = "none";
-
-        wordAudio.pause();
-        wordAudio.currentTime = 0;
-        introAudio.pause();
-        introAudio.currentTime = 0;
-      }
-    };
-
-    nextButton.onclick = () => {
-      window.location.href = `vidpage.html?letter=${letter}`;
+      nextButton.onclick = () => {
+        window.location.href = `vidpage.html?letter=${letter}`;
+      };
     };
   </script>
 </body>
